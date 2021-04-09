@@ -13,6 +13,8 @@ from os.path import join, dirname
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import django_heroku
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -80,7 +82,7 @@ WSGI_APPLICATION = 'amore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -123,5 +125,6 @@ STATICFILES_DIRS = [join(BASE_DIR, 'static')]
 
 MEDIA_ROOT = join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+django_heroku.settings(locals())
 
 CART_SESSION_ID = 'cart'
