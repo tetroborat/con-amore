@@ -1,0 +1,111 @@
+.slow-motion {
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+}
+.big-but {
+    text-decoration: none;
+    color: black;
+    padding: 40px 10px;
+    border-radius: 70px;
+}
+.big-but:hover {
+    background-color: #f906;
+    border-radius: 30px;
+    padding: 10px;
+    color: white
+}
+.round-edges {
+    border-radius: 40px
+}
+.slide-cont {
+    max-width: 1000px;
+    margin: 0 auto 10px
+}
+.img-logo {
+    height: 150px;
+    min-width: 150px;
+    padding: 15px
+}
+.img-logo-bar {
+    height: 40px;
+    min-width: 40px;
+}
+.img-logo-bar:hover {
+    height: 120px;
+    min-width: 120px;
+    background-color: #f906;
+    border-radius: 120px;
+    padding: 8px;
+}
+.img-logo:hover {
+    background-color: #f906;
+    border-radius: 120px;
+    padding: 8px
+}
+.icon-products {
+    max-width: 80px
+}
+.a-products {
+    text-decoration: none
+}
+.a-products:hover {
+    font-size: 25px;
+    color: #f906;
+}
+.a-in-cart {
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 5px 5px 5px 20px;
+    color: white;
+    background-color: black;
+    text-decoration: none
+}
+.a-in-cart:hover {
+    color: white;
+    background-color: #f906;
+    font-size: 22px;
+    padding: 10px 10px 5px 5px;
+}
+.a-products:hover .icon-products{
+    max-width: 90px
+}
+.products-cont {
+    max-width: 1000px;
+    margin: 30px auto 10px;
+    min-margin-left: 5px;
+    min-margin-right: 5px;
+    padding: 25px;
+}
+.top-bar {
+    align: center;
+    margin: 20px;
+}
+.products-bar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    opacity: 0;
+    -webkit-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+    background-color: white;
+    padding: 10px
+}
+.card {
+    height: 500px;
+    width: 200px;
+}
+.cart:hover {
+    background-color: #f906;
+}
+.grid-card {
+    align: center;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-rows: repeat(1, 500px);
+}
