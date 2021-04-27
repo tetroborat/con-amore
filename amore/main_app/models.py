@@ -1,5 +1,6 @@
 from django.template.defaultfilters import slugify
 from django.urls import reverse
+from django.utils import timezone
 from transliterate import translit
 from django.db import models
 
@@ -14,11 +15,6 @@ class Product(models.Model):
         to='Category',
         on_delete=models.CASCADE
     )
-    price = models.DecimalField(
-        verbose_name='Цена',
-        max_digits=7,
-        decimal_places=2
-    )
     time_cooking = models.DurationField(
         verbose_name='Продолжительность готовки'
     )
@@ -27,7 +23,7 @@ class Product(models.Model):
         default=True
     )
     description = models.TextField(
-        verbose_name='Описание',
+        verbose_name='Состав',
         null=True,
         blank=True
     )
@@ -38,6 +34,9 @@ class Product(models.Model):
     image = models.ImageField(
         verbose_name='Изображение',
         upload_to='products'
+    )
+    price = models.PositiveIntegerField(
+        verbose_name='Цена'
     )
 
     def __str__(self):
@@ -91,38 +90,10 @@ class Category(models.Model):
         })
 
 
-class CartItem(models.Model):
-    product = models.ForeignKey(
-        verbose_name='Продукт',
-        to=Product,
-        on_delete=models.CASCADE
-    )
-    quantity = models.PositiveIntegerField(
-        verbose_name='Количество'
-    )
-    cart = models.ForeignKey(
-        verbose_name='Корзина',
-        to='Cart',
-        on_delete=models.CASCADE
-    )
-
-    def save(self, **kwargs):
-        self.cart.price += self.product.price * self.quantity
-        self.cart.save()
-        super(CartItem, self).save(**kwargs)
-
-
-class Cart(models.Model):
-    price = models.DecimalField(
-        verbose_name='Стоимость продуктов',
-        max_digits=8,
-        decimal_places=2
-    )
-
-
 class Order(models.Model):
     time_begin = models.DateTimeField(
         verbose_name='Время поступления заказа',
+        default=timezone.datetime.now()
     )
     customer = models.CharField(
         verbose_name='Заказчик',
@@ -136,10 +107,8 @@ class Order(models.Model):
         verbose_name='Адрес доставки',
         max_length=255
     )
-    cart = models.OneToOneField(
-        verbose_name='Корзина',
-        to=Cart,
-        on_delete=models.CASCADE
+    cart = models.TextField(
+        verbose_name='Корзина'
     )
     comment = models.TextField(
         verbose_name='Комментарий к заказу',
@@ -168,3 +137,9 @@ class Promo(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Pizza(Product):
+    optional_price = models.PositiveIntegerField(
+        verbose_name='Цена большой пиццы'
+    )

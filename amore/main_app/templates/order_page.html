@@ -1,10 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'main_page.html' %}
+{% block content %}
+<div class="shadow container card round-edges">
+    <div class="row" style="margin: 2rem">
+        <div class="col-2" style="margin: auto">
+            <a class="fs-3 shadow slow-motion a-in-cart" type="button" data-bs-toggle="collapse" href="#collapse_cart"
+               role="button" aria-expanded="false"
+               aria-controls="collapse_cart" style="border-radius: 20px 5px 5px 20px" onclick="ClickCart()"
+               id="cart-collapse">
+                Корзина
+            </a>
+        </div>
+        <div class="col" align="center" style="margin: auto" id="products_in_cart_images">
 
-</body>
-</html>
+        </div>
+        <div class="col-2" align="right" style="margin: auto">
+            <p id="p_total_price" class="lead" style="font-size: 2rem; margin: auto">
+                <strong id="total_price">{{ total_price }}</strong> ₽
+            </p>
+            <div align="right" style="padding-right: 0px; margin: auto">
+                <a href="/" id="clear-cart" type="button" onclick="ClearCart()"
+                   class="fs-3 shadow-sm slow-motion a-in-cart"
+                   style="font-size: 1.35rem; border-radius: 5px 20px 5px 5px">
+                    Очистить
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="collapse" id="collapse_cart">
+        <div id="cart_modal" style="margin: auto"></div>
+    </div>
+</div>
+
+<div class="shadow container card round-edges" style="padding: 3rem; margin: 3rem auto">
+    <h1 class="display-5">
+        Ваши контакты
+    </h1>
+    <br>
+    <form style="width: 30%" method="post" action="/order/">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="input_name" class="form-label">Имя</label>
+            <input type="text" class="form-control" id="input_name">
+        </div>
+        <div class="mb-3">
+            <label for="input_phone_number" class="form-label">Телефон</label>
+            <input type="tel" value="+7" class="form-control" id="input_phone_number">
+        </div>
+        <div class="mb-3">
+            <label for="input_address" class="form-label">Адрес</label>
+            <input type="text" class="form-control" id="input_address">
+        </div>
+        <div class="mb-3">
+            <label for="input_comment" class="form-label">Комментарий</label>
+            <textarea type="text" class="form-control" id="input_comment" rows="3"></textarea>
+        </div>
+        <button type="submit" class="shadow-sm slow-motion a-in-cart" style="font-size: 1.5rem; border-radius: 5px 5px 5px 20px; margin-top: 2rem; border: 0">
+            Заказать
+        </button>
+    </form>
+</div>
+<script>
+    function ClickCart() {
+        pr = $('#p_total_price');
+        a = $('#cart-collapse');
+        im = $('#images');
+        if (pr.hasClass('invisible')) {
+            $('#products_in_cart_images').load('/products_in_cart_images/');
+            a.css('border-radius','20px 5px 5px 20px');
+            $('#clear-cart').hide();
+            im.show();
+            pr.show();
+            pr.removeClass('invisible');
+        }
+        else {
+            im.hide();
+            pr.hide();
+            $('#clear-cart').show();
+            pr.addClass('invisible');
+            a.css('border-radius','20px 5px 5px 5px');
+        };
+    };
+    $('#cart_modal').load('/modal_cart/ .modal-body');
+    $('#products_in_cart_images').load('/products_in_cart_images/');
+    $('#clear-cart').hide();
+</script>
+{% endblock content %}

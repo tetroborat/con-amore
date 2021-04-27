@@ -28,18 +28,18 @@
     padding: 15px
 }
 .img-logo-bar {
-    height: 40px;
-    min-width: 40px;
+    min-height: 2.75rem;
+    min-width: 5.5rem;
+    height: 2.75rem;
+    width: 5.5rem;
 }
 .img-logo-bar:hover {
-    height: 120px;
-    min-width: 120px;
-    background-color: #f906;
+    height: 3rem;
+    width: 5.8rem;
     border-radius: 120px;
-    padding: 8px;
+    padding: 0.3rem;
 }
 .img-logo:hover {
-    background-color: #f906;
     border-radius: 120px;
     padding: 8px
 }
@@ -47,15 +47,17 @@
     max-width: 80px
 }
 .a-products {
-    text-decoration: none
+    text-decoration: none;
+    font-size: 1.25rem;
+    margin: 0 0.25rem;
 }
 .a-products:hover {
-    font-size: 25px;
+    font-size: 1.7rem;
     color: #f906;
 }
 .a-in-cart {
     font-size: 20px;
-    padding: 5px;
+    padding: 5px 15px 5px 15px;
     border-radius: 5px 5px 5px 20px;
     color: white;
     background-color: black;
@@ -64,8 +66,8 @@
 .a-in-cart:hover {
     color: white;
     background-color: #f906;
-    font-size: 22px;
-    padding: 10px 10px 5px 5px;
+    font-size: 1.35rem;
+    padding: 10px 20px 5px 15px;
 }
 .a-products:hover .icon-products{
     max-width: 90px
@@ -73,9 +75,12 @@
 .products-cont {
     max-width: 1000px;
     margin: 30px auto 10px;
-    min-margin-left: 5px;
-    min-margin-right: 5px;
     padding: 25px;
+}
+.big-products-cont{
+    min-width: 80%;
+    border: 0px;
+    background-color: #f8f8f8;
 }
 .top-bar {
     align: center;
@@ -89,23 +94,82 @@
     top: 0;
     left: 0;
     z-index: 1001;
-    opacity: 0;
+    opacity: 1;
     -webkit-transition: opacity 0.2s;
     transition: opacity 0.2s;
     background-color: white;
     padding: 10px
 }
-.card {
-    height: 500px;
-    width: 200px;
+.main_card {
+    height: 26.5rem;
+    width: 19rem;
 }
 .cart:hover {
     background-color: #f906;
 }
 .grid-card {
-    align: center;
     display: grid;
-    grid-gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-template-rows: repeat(1, 500px);
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    grid-template-rows: repeat(0, 32rem);
+    justify-items: center;
+}
+body {
+    min-width: 800px;
+}
+.lb_pizza_but {
+    width: 58px;
+    height: 36px;
+    padding: 5px 0 0 0;
+    font-size: 1rem
+}
+.cart {
+    position: fixed;
+    bottom: 4%;
+    right: 2%;
+    z-index: 1001;
+    opacity: 1;
+    border: 0;
+    background-color: black;
+    padding: 1rem
+}
+.product-name {
+     margin-bottom: 2rem;
+     font-size: 1.5rem
+}
+.product-price {
+    font-size: 1.25rem
+}
+.pizza_card {
+    height: 29.75rem
+}
+.product-category {
+    padding-top: 7rem;
+    margin-left: 18%
+}
+@media (max-width: 768px) {
+    .main_card {
+        width: 80%;
+        height: 40rem
+    }
+    .grid-card {
+        grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+        grid-template-rows: repeat(0, 40rem);
+    }
+    .a-in-cart {
+        font-size: 1.75rem
+    }
+    .product-name {
+        font-size: 2rem
+    }
+    .product-price {
+        font-size: 1.35rem
+    }
+    .pizza_card {
+        height: 47rem
+    }
+    .product-category {
+        font-size: 5rem;
+        margin-left: 18%
+    }
 }

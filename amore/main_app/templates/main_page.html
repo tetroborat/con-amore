@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta name = "viewport" content = "width=device-width, initial-scale = 1" charset="UTF-8">
     <title>{{ title }}</title>
 </head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
         crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="shortcut icon" href="/media/favicon.png" type="image/png">
 <link rel="stylesheet" type="text/css" href="/static/main_page.css"/>
-<body>
+<body style="background-color: #f8f8f8">
 <div class="top-bar">
-    <a href="#" style="margin-right: 40px">
+    <a href="/" style="margin-right: 40px">
         <img src="/media/logo.png" alt="ConAmore" class="img-fluid img-logo slow-motion"></a>
     <a class="display-5 big-but slow-motion" href="#">
         Вакансии</a>
@@ -25,7 +27,7 @@
 
 <div class="products-bar shadow" id="bar_category">
     <a href="#">
-        <img src="/media/logo.png" alt="ConAmore" class="img-fluid img-logo-bar slow-motion"></a>
+        <img src="/media/mini-logo.png" alt="ConAmore" class="img-fluid img-logo-bar slow-motion"></a>
     {% for category in categories %}
     <a class="col lead slow-motion a-products" align="center" href="#{{ category.slug }}">
         <kbd>
@@ -70,9 +72,10 @@
     </div>
 </div>
 
-<div class="shadow container round-edges products-cont row img-thumbnail" align="center" id="products-cont" style="min-height: 180px">
+<div class="shadow container round-edges products-cont row img-thumbnail" align="center" id="products-cont"
+     style="min-height: 180px">
     {% for category in categories %}
-    <a class="col lead slow-motion a-products" align="center" href="#{{ category.slug }}">
+    <a class="col lead slow-motion a-products" href="#{{ category.slug }}">
         {% if category.image_icon %}
         <img src="{{ category.image_icon.url }}" class="img-fluid icon-products slow-motion"
              alt='Иконка "{{ category.name }}"'>
@@ -85,54 +88,172 @@
     {% endfor %}
 </div>
 
-{% for category, products in dict_category_products.items %}
-    <h1 class="display-4" id="{{ category.slug }}" style="padding-top: 80px; margin-left: 20%">
-        {{ category }}
-    </h1>
-    <div class="shadow container round-edges products-cont img-thumbnail grid-card" style="min-height: 500px; width: 66%">
-        {% for product in products %}
-            <div class="shadow-sm card round-edges" style="width: 18rem;">
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" class="round-edges card-img-top" alt='Иконка "{{ product.name }}"'>
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ product }}</h5>
-                    <p class="card-text" style="height: 100px; color: grey">{{ product.description }}</p>
-                    <div class="row">
-                        <div class="col">
-                            <a href="#" class="shadow-sm slow-motion a-in-cart">
-                                        В корзину
-                            </a>
-                        </div>
-                        <p class="col-4" align="right">
-                            {{ product.price }} ₽
-                        </p>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-{% endfor %}
+<div data-bs-toggle="modal" data-bs-target="#cartModal" class="cart slow-motion btn btn-secondary" id="cart_price">
+    <p style="font-size: 2rem; margin: auto" align="center" id="p_total_price">
+        {% if total_price %}
+            <strong id="total_price">{{ total_price }}</strong> ₽
+        {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="3rem" height="3rem" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+              <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+        {% endif %}
+    </p>
+</div>
+<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content round-edges" id="cart_modal">
 
+        </div>
+        <script>
+            $('#cart_modal').load('/modal_cart/');
+        </script>
+    </div>
+</div>
+
+{% for category, products in dict_category_products.items %}
+<h1 class="display-4 product-category" id="{{ category.slug }}">
+    {{ category }}
+</h1>
+<div class="container products-cont big-products-cont img-thumbnail grid-card"
+     style="{% if category.name != 'Пиццы' %} grid-template-rows: repeat  (1, 176rem); {% endif %}">
+    {% for product in products %}
+    <div class="shadow-sm card main_card round-edges {% if category.name == 'Пиццы' %} pizza_card {% endif %}"  id="card_{{ product }}">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" class="round-edges" alt='Иконка "{{ product.name }}"'
+             style="min-height: 286px">
+        {% endif %}
+        <div class="card-body">
+            <p class="card-title product-name" id="name_{{ product }}">
+                {{ product }}
+                {% if product.description %}
+                <a tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="top"
+                   style="outline:none"
+                   title="Состав"
+                   data-bs-content="{{ product.description }} ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                    </svg>
+                </a>
+                {% endif %}
+            </p>
+            {% if category.name == 'Пиццы' %}
+            <div style="margin-bottom: 1rem">
+                <input type="radio" class="btn-check" name="{{ product }}" id="20{{ product }}" autocomplete="off"
+                       onclick="ChoosePrice(this)" value="{{ product.price }}" checked>
+                <label class="btn btn-outline-secondary lb_pizza_but" for="20{{ product }}">
+                    20см
+                </label>
+                <input type="radio" class="btn-check" name="{{ product }}" id="30{{ product }}" autocomplete="off"
+                       onclick="ChoosePrice(this)" value="{{ product.optional_price }}">
+                <label class="btn btn-outline-secondary lb_pizza_but" for="30{{ product }}">
+                    30см
+                </label>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col">
+                    <a href="#1" class="shadow-sm slow-motion a-in-cart" id="a_{{ product }}" name="{{ product }}" onclick="AddProduct(this)">
+                        В корзину
+                    </a>
+                </div>
+                <p class="col-4 text-muted product-price" align="right" id="price_{{ product }}">
+                    <strong id="num_price_{{ product }}" data-name="{{ product }}">{{ product.price }}</strong> ₽
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+<script>
+    $('#bar_category').hide();
+    $('#cart_price').hide();
+</script>
 {% endblock content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</body>
 <script>
 $(function() {
   var elem = document.getElementById('products-cont');
   var height_elem = elem.offsetHeight;
   $(window).on('load scroll', function() {
   	var top = elem.getBoundingClientRect().top ;
-    if (top + height_elem <= 0) {
-      $('#bar_category').css({
-        opacity: 1
-      });
-    } else {
-      $('#bar_category').css({
-        opacity: 0
-      });
+    if (top + height_elem <= 50) {
+      $('#bar_category').slideDown('fast');
+      $('#cart_price').fadeIn('slow');
     }
+    else {
+      $('#bar_category').slideUp('fast');
+      $('#cart_price').fadeOut(100);
+    };
   });
 });
+var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+});
+function ChoosePrice(inp) {
+    $('#num_price_' + inp.name).html(inp.value);
+};
+function CalcTotalPrice(total_price) {
+    if (total_price != 0) {
+        $('#p_total_price').html(`<strong id="total_price">` + total_price + `</strong> ₽`);
+    }
+    else {
+        $('#cart_price').html(`
+            <p style="font-size: 2rem; margin: auto" align="center" id="p_total_price">
+                <svg xmlns="http://www.w3.org/2000/svg" width="3rem" height="3rem" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+            </p>
+        `);
+    }
+};
+function request(in_cart_a, operation) {
+    var price = document.getElementById('num_price_' + in_cart_a.name);
+    var operations = {
+        '+': '/add_product_in_cart/',
+        '-': '/remove_product_from_cart/',
+        'del': '/del_product_from_cart/'
+    };
+    $.ajax({
+        data: { name: price.dataset.name, price: price.innerHTML },
+        url: operations[operation],
+        success: function (data) {
+            if (document.getElementById('bar_category')) {
+                $('#cart_modal').load('/modal_cart/');
+            }
+            else {
+                $('#cart_modal').load('/modal_cart/ .modal-body');
+            };
+            CalcTotalPrice (data.total_price);
+        }
+    });
+    return false;
+};
+function FProducts(a, operation) {
+    var begin_str = $('#' + a.id).html();
+    $('#' + a.id).html(
+    `<div class="spinner-border text-light" role="status" style="margin: auto 2.1rem">
+        <span class="visually-hidden">Загрузка...</span>
+    </div>`);
+    request(a, operation);
+    $('#' + a.id).html(begin_str);
+};
+function AddProduct(a) {
+    FProducts(a, '+');
+};
+function ClearCart() {
+    $('#cart_modal').load('/clear_cart/');
+    CalcTotalPrice (0)
+};
+function RemoveProduct(a) {
+    FProducts(a, '-');
+};
+function DelProduct(a) {
+    FProducts(a, 'del');
+};
 </script>
-</body>
 </html>

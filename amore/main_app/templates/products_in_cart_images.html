@@ -1,0 +1,25 @@
+{% if session_cart %}
+<div id="images">
+    {% for atr in session_cart %}
+    <div style="display: inline-block; margin: 1rem; width: 5rem; height: 5rem" align="center" class="position-relative">
+        <img class="row" src="{{ atr.product.image.url }}" style="width: 5rem; height: 5rem">
+        {% if atr.quantity > 1 %}
+            <div class="position-absolute top-0 end-0 translate-middle-y">
+                <kbd>
+                    {{ atr.quantity }}
+                </kbd>
+            </div>
+        {% endif %}
+        {% if atr.product.category.name == 'Пиццы' %}
+            <kbd style="font-size: 0.7rem">
+            {% if atr.product.price == atr.price %}
+                20см
+            {% else %}
+                30см
+            {% endif %}
+            </kbd>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
