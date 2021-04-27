@@ -11,12 +11,12 @@
         integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
         crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="shortcut icon" href="/media/favicon.png" type="image/png">
+<link rel="shortcut icon" href="/static/favicon.png" type="image/png">
 <link rel="stylesheet" type="text/css" href="/static/main_page.css"/>
 <body style="background-color: #f8f8f8">
 <div class="top-bar">
     <a href="/" style="margin-right: 40px">
-        <img src="/media/logo.png" alt="ConAmore" class="img-fluid img-logo slow-motion"></a>
+        <img src="/static/logo.png" alt="ConAmore" class="img-fluid img-logo slow-motion"></a>
     <a class="display-5 big-but slow-motion" href="#">
         Вакансии</a>
     <a class="display-5 big-but slow-motion" href="#">
@@ -27,7 +27,7 @@
 
 <div class="products-bar shadow" id="bar_category">
     <a href="#">
-        <img src="/media/mini-logo.png" alt="ConAmore" class="img-fluid img-logo-bar slow-motion"></a>
+        <img src="/static/mini-logo.png" alt="ConAmore" class="img-fluid img-logo-bar slow-motion"></a>
     {% for category in categories %}
     <a class="col lead slow-motion a-products" align="center" href="#{{ category.slug }}">
         <kbd>
