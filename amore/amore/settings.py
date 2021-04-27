@@ -137,10 +137,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = join(BASE_DIR, 'static_cdn')
 STATICFILES_DIRS = [join(BASE_DIR, 'static')]
 
-# MEDIA_ROOT = join(BASE_DIR, 'media')
-# MEDIA_URL = '/media/'
-django_heroku.settings(locals())
-
 CART_SESSION_ID = 'cart'
 
-
+django_heroku.settings(locals(), staticfiles=False)
