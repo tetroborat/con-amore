@@ -18,6 +18,7 @@ import django_heroku
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -25,9 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '(fks+q)h*4^!4&8przyp^c9!-5)ub7(+27aukaq+oc=gcc)^ij'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -35,7 +37,6 @@ INSTALLED_APPS = [
     'main_app',
 
     'django_cleanup',
-    'storages',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -75,6 +76,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'amore.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -84,6 +86,7 @@ DATABASES = {
         'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -103,12 +106,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'Asia/Yekaterinburg'  # UTC+5
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
