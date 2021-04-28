@@ -9,7 +9,9 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-from os.path import join, dirname
+
+from os import environ
+from os.path import join
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,6 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '(fks+q)h*4^!4&8przyp^c9!-5)ub7(+27aukaq+oc=gcc)^ij'
 
+AWS_ACCESS_KEY_ID = environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_URL = environ.get('AWS_URL')
+# AWS_DEFAULT_ACL = None
+# AWS_S3_REGION_NAME = 'eu-west-1'
+# AWS_S3_SIGNATURE_VERSION = 's3v4'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -33,16 +43,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'main_app',
-
-    'django_cleanup',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_cleanup',
+    'storages',
+
+    'main_app'
 ]
 
 MIDDLEWARE = [
@@ -119,12 +130,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+MEDIA_URL = AWS_URL + '/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 STATIC_URL = '/static/'
 STATIC_ROOT = join(BASE_DIR, 'static_cdn')
 STATICFILES_DIRS = [join(BASE_DIR, 'static')]
 
-MEDIA_ROOT = join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-django_heroku.settings(locals())
-
 CART_SESSION_ID = 'cart'
+
+django_heroku.settings(locals(), staticfiles=False)
