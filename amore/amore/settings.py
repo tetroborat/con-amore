@@ -26,16 +26,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '(fks+q)h*4^!4&8przyp^c9!-5)ub7(+27aukaq+oc=gcc)^ij'
 
-AWS_ACCESS_KEY_ID = environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_URL = environ.get('AWS_URL')
+AWS_ACCESS_KEY_ID = 'AKIASR57ROZY54F23XGW'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'conamorebacket'
+AWS_URL = 'https://conamorebacket.s3-eu-west-1.amazonaws.com/'
+# AWS_ACCESS_KEY_ID = environ.get('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = environ.get('AWS_SECRET_ACCESS_KEY')
+# AWS_STORAGE_BUCKET_NAME = environ.get('AWS_STORAGE_BUCKET_NAME')
+# AWS_URL = environ.get('AWS_URL')
 # AWS_DEFAULT_ACL = None
 # AWS_S3_REGION_NAME = 'eu-west-1'
 # AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -134,9 +138,8 @@ MEDIA_URL = AWS_URL + '/media/'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = join(BASE_DIR, 'static_cdn')
 STATICFILES_DIRS = [join(BASE_DIR, 'static')]
 
 CART_SESSION_ID = 'cart'
 
-django_heroku.settings(locals(), staticfiles=False)
+django_heroku.settings(locals())
