@@ -25,7 +25,7 @@
 
 {% block content %}
 
-<div class="products-bar shadow" id="bar_category">
+<div class="products-bar shadow" id="bar_category" style="display: none">
     <a href="#">
         <img src="/static/mini-logo.png" alt="ConAmore" class="img-fluid img-logo-bar slow-motion"></a>
     {% for category in categories %}
@@ -38,7 +38,7 @@
 </div>
 
 <div class="container slide-cont">
-    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" style="display: none">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
                     aria-current="true" aria-label="Slide 1"></button>
@@ -70,10 +70,21 @@
             <span class="visually-hidden">Следующий</span>
         </button>
     </div>
+    <div id="spinner_promos" class="shadow round-edges img-thumbnail" align="center" style="padding: 9.3rem">
+        <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Загрузка...</span>
+        </div>
+    </div>
 </div>
 
+
+<div id="spinner_products-cont" class="products-cont shadow round-edges img-thumbnail" align="center" style="padding: 3rem; margin: auto">
+    <div class="spinner-grow" role="status">
+        <span class="visually-hidden">Загрузка...</span>
+    </div>
+</div>
 <div class="shadow container round-edges products-cont row img-thumbnail" align="center" id="products-cont"
-     style="min-height: 180px">
+     style="min-height: 180px; display: none">
     {% for category in categories %}
     <a class="col lead slow-motion a-products" href="#{{ category.slug }}">
         {% if category.image_icon %}
@@ -88,7 +99,7 @@
     {% endfor %}
 </div>
 
-<div data-bs-toggle="modal" data-bs-target="#cartModal" class="cart slow-motion btn btn-secondary" id="cart_price">
+<div data-bs-toggle="modal" data-bs-target="#cartModal" class="cart slow-motion btn btn-secondary" id="cart_price" style="display: none">
     <p style="font-size: 2rem; margin: auto" align="center" id="p_total_price">
         {% if total_price %}
             <strong id="total_price">{{ total_price }}</strong> ₽
@@ -117,13 +128,18 @@
 <div class="container products-cont big-products-cont img-thumbnail grid-card"
      style="{% if category.name != 'Пиццы' %} grid-template-rows: repeat  (1, 176rem); {% endif %}">
     {% for product in products %}
-    <div class="shadow-sm card main_card round-edges {% if category.name == 'Пиццы' %} pizza_card {% endif %}"  id="card_{{ product }}">
+    <div class="shadow-sm card main_card round-edges {% if category.name == 'Пиццы' %} pizza_card {% endif %}"  id="card_{{ product.slug }}">
         {% if product.image %}
         <img src="{{ product.image.url }}" class="round-edges" alt='Иконка "{{ product.name }}"'
-             style="min-height: 286px">
+             style="min-height: 286px; display: none" id="img_{{ product.slug }}" onload="LoadImg(this)">
+        <div id="spinner_img_{{ product.slug }}" align="center" style="padding: 8rem; margin: auto; min-height: 286px">
+            <div class="spinner-grow" role="status">
+                <span class="visually-hidden">Загрузка...</span>
+            </div>
+        </div>
         {% endif %}
         <div class="card-body">
-            <p class="card-title product-name" id="name_{{ product }}">
+            <p class="card-title product-name" id="name_{{ product.slug }}">
                 {{ product }}
                 {% if product.description %}
                 <a tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="top"
@@ -140,26 +156,26 @@
             </p>
             {% if category.name == 'Пиццы' %}
             <div style="margin-bottom: 1rem">
-                <input type="radio" class="btn-check" name="{{ product }}" id="20{{ product }}" autocomplete="off"
+                <input type="radio" class="btn-check" name="{{ product.slug }}" id="20{{ product.slug }}" autocomplete="off"
                        onclick="ChoosePrice(this)" value="{{ product.price }}" checked>
-                <label class="btn btn-outline-secondary lb_pizza_but" for="20{{ product }}">
+                <label class="btn btn-outline-secondary lb_pizza_but" for="20{{ product.slug }}">
                     20см
                 </label>
-                <input type="radio" class="btn-check" name="{{ product }}" id="30{{ product }}" autocomplete="off"
+                <input type="radio" class="btn-check" name="{{ product.slug }}" id="30{{ product.slug }}" autocomplete="off"
                        onclick="ChoosePrice(this)" value="{{ product.optional_price }}">
-                <label class="btn btn-outline-secondary lb_pizza_but" for="30{{ product }}">
+                <label class="btn btn-outline-secondary lb_pizza_but" for="30{{ product.slug }}">
                     30см
                 </label>
             </div>
             {% endif %}
             <div class="row">
                 <div class="col">
-                    <a href="#1" class="shadow-sm slow-motion a-in-cart" id="a_{{ product }}" name="{{ product }}" onclick="AddProduct(this)">
+                    <a href="#1" class="shadow-sm slow-motion a-in-cart" id="a_{{ product.slug }}" name="{{ product.slug }}" onclick="FProducts(this, '+')">
                         В корзину
                     </a>
                 </div>
-                <p class="col-4 text-muted product-price" align="right" id="price_{{ product }}">
-                    <strong id="num_price_{{ product }}" data-name="{{ product }}">{{ product.price }}</strong> ₽
+                <p class="col-4 text-muted product-price" align="right" id="price_{{ product.slug }}">
+                    <strong id="num_price_{{ product.slug }}" data-name="{{ product.slug }}">{{ product.price }}</strong> ₽
                 </p>
             </div>
         </div>
@@ -167,20 +183,16 @@
     {% endfor %}
 </div>
 {% endfor %}
-<script>
-    $('#bar_category').hide();
-    $('#cart_price').hide();
-</script>
 {% endblock content %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
 <script>
 $(function() {
   var elem = document.getElementById('products-cont');
-  var height_elem = elem.offsetHeight;
   $(window).on('load scroll', function() {
   	var top = elem.getBoundingClientRect().top ;
-    if (top + height_elem <= 50) {
+    if (top <= -50) {
       $('#bar_category').slideDown('fast');
       $('#cart_price').fadeIn('slow');
     }
@@ -219,7 +231,7 @@ function request(in_cart_a, operation) {
         'del': '/del_product_from_cart/'
     };
     $.ajax({
-        data: { name: price.dataset.name, price: price.innerHTML },
+        data: { slug: price.dataset.name, price: price.innerHTML },
         url: operations[operation],
         success: function (data) {
             if (document.getElementById('bar_category')) {
@@ -227,6 +239,7 @@ function request(in_cart_a, operation) {
             }
             else {
                 $('#cart_modal').load('/modal_cart/ .modal-body');
+                $('.image-modal-product').hide();
             };
             CalcTotalPrice (data.total_price);
         }
@@ -242,18 +255,24 @@ function FProducts(a, operation) {
     request(a, operation);
     $('#' + a.id).html(begin_str);
 };
-function AddProduct(a) {
-    FProducts(a, '+');
-};
 function ClearCart() {
     $('#cart_modal').load('/clear_cart/');
     CalcTotalPrice (0)
 };
-function RemoveProduct(a) {
-    FProducts(a, '-');
+function LoadImg(img) {
+    $('#spinner_' + img.id).hide();
+    $('#' + img.id).fadeIn('linear');
 };
-function DelProduct(a) {
-    FProducts(a, 'del');
-};
+</script>
+<script>
+    $('#carouselExampleCaptions').imagesLoaded( function() {
+        $('#carouselExampleCaptions').fadeIn('linear');
+        $('#spinner_promos').hide();
+    });
+    $('#products-cont').imagesLoaded( function() {
+        $('#products-cont').fadeIn('linear');
+        $('#spinner_products-cont').hide();
+    });
+
 </script>
 </html>

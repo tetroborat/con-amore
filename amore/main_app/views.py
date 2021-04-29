@@ -5,6 +5,8 @@ from django.views import View
 from .cart import Cart as SessionCart
 from main_app.models import *
 
+from .models import Product
+
 
 class MainPageView(View):
 
@@ -77,7 +79,7 @@ class CartModalView(View):
 
 
 def AddProductInCart(request):
-    product = Product.objects.get(name=request.GET.get('name', None))
+    product = Product.objects.get(slug=request.GET.get('slug', None))
     price = request.GET.get('price', None)
     cart = SessionCart(request)
     cart.add(product, price)
@@ -93,7 +95,7 @@ def ClearCart(request):
 
 
 def RemoveProductFromCart(request):
-    product = Product.objects.get(name=request.GET.get('name', None))
+    product = Product.objects.get(slug=request.GET.get('slug', None))
     price = request.GET.get('price', None)
     cart = SessionCart(request)
     quantity = cart.cart[str(product.id)][str(price)]
@@ -108,7 +110,7 @@ def RemoveProductFromCart(request):
 
 
 def DeleteProductFromCart(request):
-    product = Product.objects.get(name=request.GET.get('name', None))
+    product = Product.objects.get(slug=request.GET.get('slug', None))
     price = request.GET.get('price', None)
     cart = SessionCart(request)
     cart.remove(product, price)
