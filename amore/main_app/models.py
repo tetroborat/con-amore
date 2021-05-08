@@ -110,6 +110,11 @@ class Order(models.Model):
     cart = models.TextField(
         verbose_name='Корзина'
     )
+    total_price = models.DecimalField(
+        verbose_name='Сумма заказа',
+        decimal_places=2,
+        max_digits=8
+    )
     comment = models.TextField(
         verbose_name='Комментарий к заказу',
         null=True,
@@ -117,10 +122,10 @@ class Order(models.Model):
     )
 
     def __str__(self):
-        return f'{self.customer}: {self.number_customer}'
+        return f'{self.time_begin.strftime("%d.%m.%Y %H:%M")}  |  {self.customer}  |  {self.number_customer}  |  {self.total_price} ₽'
 
     def get_url(self):
-        return reverse('order', kwargs={
+        return reverse('order_detail', kwargs={
             'order_id': self.pk
         })
 

@@ -1,11 +1,22 @@
+from django.contrib import messages
 from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render
-from django.views import View
+from django.utils.safestring import mark_safe
 
 from .cart import Cart as SessionCart
+from django.shortcuts import render
+from django.views import View
 from main_app.models import *
-
 from .models import Product
+
+from telepot import Bot
+
+token = '1736164582:AAFT1ED3G110wQEBvhF1V9-JUmDbSmYqW9M'
+my_id = 307823129
+telegramBot = Bot(token)
+
+
+def send_message(text):
+    telegramBot.sendMessage(my_id, text, parse_mode="Markdown")
 
 
 class MainPageView(View):
@@ -56,13 +67,27 @@ class OrderPageView(View):
 
     @staticmethod
     def post(request, **kwargs):
-        Order(
-            customer=request.post['input_name'],
-            number_customer=request.post['input_phone_number'],
-            address=request.post['input_address'],
-            cart=SessionCart(request),
-            comment=request.post['input_comment']
+        cart = SessionCart(request)
+        order = Order(
+            customer=request.POST.get('input_name'),
+            number_customer=request.POST.get('input_phone_number'),
+            address=request.POST.get('input_address') if request.POST.get('check_address') != 'on' else 'Самовывоз',
+            cart=cart,
+            total_price=cart.get_total_price(),
+            comment=request.POST.get('input_comment')
         )
+        order.save()
+        message = f'*Заказ №{order.pk}*\n\n' \
+                  f'{order.cart}\n' \
+                  f'*Итого: {order.total_price} ₽*\n\n' \
+                  f'{order.customer}\n' \
+                  f'{order.address}\n' \
+                  f'{order.number_customer}'
+        if order.comment != '':
+            message += f'\nКомментарий: {order.comment}'
+        send_message(message)
+        messages.success(request, mark_safe(f'Скоро мы позвоним Вам! Заказ <a href="{order.get_url()}" class="alert-link">номер №{order.pk}</a> поступил в обработку.'))
+        cart.clear()
         return HttpResponseRedirect('/')
 
 
@@ -73,7 +98,8 @@ class CartModalView(View):
         cart = SessionCart(request)
         context = {
             'session_cart': cart.get_context_for_view(),
-            'total_price': cart.get_total_price()
+            'total_price': cart.get_total_price(),
+            'check_modal': request.META.get('HTTP_REFERER').split('/')[-2] != 'order'
         }
         return render(request, 'cart_modal.html', context)
 
@@ -129,3 +155,33 @@ class ProductsInCartImagesView(View):
             'session_cart': cart.get_context_for_view()
         }
         return render(request, 'products_in_cart_images.html', context)
+
+
+class ContactsView(View):
+
+    @staticmethod
+    def get(request):
+        context = {
+            'title': 'Con Amore | Контакты'
+        }
+        return render(request, 'contacts.html', context)
+
+
+class AboutUsView(View):
+
+    @staticmethod
+    def get(request):
+        return render(request, 'about_us.html')
+
+
+class OrderDetailPageView(View):
+
+    @staticmethod
+    def get(request, **kwargs):
+        order = Order.objects.get(id=int(kwargs["order_id"]))
+        cart = order.cart
+        return render(request, 'order_detail_page.html', {
+            'title': f'Con Amore | Заказ №{kwargs["order_id"]}',
+            'order': order,
+            'cart': cart
+        })

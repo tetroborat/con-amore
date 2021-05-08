@@ -1,0 +1,30 @@
+{% extends 'main_page.html' %}
+{% block content %}
+<div id="cart" class="shadow">
+</div>
+<script>
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        $('#cart').html('<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2062da33f289d0ea42e0bc78af51f127c24f432d03b8f60f4788bbc086b787e6&amp;width=100%25&amp;height=300&amp;lang=ru_RU&amp;scroll=false"></scr'+'ipt>');
+    } else {
+        $('#cart').html('<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2062da33f289d0ea42e0bc78af51f127c24f432d03b8f60f4788bbc086b787e6&amp;width=100%25&amp;height=300&amp;lang=ru_RU&amp;scroll=false"></scr'+'ipt>')
+    }
+</script>
+<div align="center" style="margin-top: 3.5rem">
+    <h1 class="display-5" style="margin-bottom: 3rem">
+        <a href="tel:+79193004313" style="text-decoration: none; color: black">
+            +7 (919) 300-43-13
+        </a>
+    </h1>
+    <div style="display: inline-block; height: 4rem; width: 12rem">
+        <a class="soc-big-but slow-motion" href="https://vk.com/pizza_con_amore74">
+            <img src="/static/vk.png" alt="VK" class="img-fluid" style="width: 3rem; height: 3rem">
+        </a>
+    </div>
+    <div style="display: inline-block; height: 4rem; width: 12rem">
+        <a class="soc-big-but slow-motion"
+           href="https://vk.com/away.php?to=https%3A%2F%2Fwww.instagram.com%2Fpizza_con_amore74&cc_key=">
+            <img src="/static/instagram.png" alt="instagram" class="img-fluid" style="width: 3rem; height: 3rem">
+        </a>
+    </div>
+</div>
+{% endblock content %}
