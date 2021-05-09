@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.http import JsonResponse, HttpResponseRedirect
 from django.utils.safestring import mark_safe
 
+from amore.settings import TOKEN, MY_ID
 from .cart import Cart as SessionCart
 from django.shortcuts import render
 from django.views import View
@@ -10,13 +11,12 @@ from .models import Product
 
 from telepot import Bot
 
-token = '1736164582:AAFT1ED3G110wQEBvhF1V9-JUmDbSmYqW9M'
-my_id = 307823129
-telegramBot = Bot(token)
+
+telegramBot = Bot(TOKEN)
 
 
 def send_message(text):
-    telegramBot.sendMessage(my_id, text, parse_mode="Markdown")
+    telegramBot.sendMessage(MY_ID, text, parse_mode="Markdown")
 
 
 class MainPageView(View):

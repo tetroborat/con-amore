@@ -22,8 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '(fks+q)h*4^!4&8przyp^c9!-5)ub7(+27aukaq+oc=gcc)^ij'
+SECRET_KEY = environ.get('SECRET_KEY')
+
+TOKEN = environ.get('TOKEN')
+MY_ID = environ.get('MY_ID')
 
 AWS_ACCESS_KEY_ID = environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = environ.get('AWS_SECRET_ACCESS_KEY')
@@ -34,7 +36,7 @@ AWS_URL = environ.get('AWS_URL')
 # AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
