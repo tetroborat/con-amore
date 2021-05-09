@@ -92,8 +92,7 @@ class Category(models.Model):
 
 class Order(models.Model):
     time_begin = models.DateTimeField(
-        verbose_name='Время поступления заказа',
-        default=timezone.datetime.now()
+        verbose_name='Время поступления заказа'
     )
     customer = models.CharField(
         verbose_name='Заказчик',

@@ -69,6 +69,7 @@ class OrderPageView(View):
     def post(request, **kwargs):
         cart = SessionCart(request)
         order = Order(
+            time_begin=timezone.datetime.now(),
             customer=request.POST.get('input_name'),
             number_customer=request.POST.get('input_phone_number'),
             address=request.POST.get('input_address') if request.POST.get('check_address') != 'on' else 'Самовывоз',
