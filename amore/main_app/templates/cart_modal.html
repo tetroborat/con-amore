@@ -1,4 +1,5 @@
 {% if total_price > 0 %}
+{% if check_modal %}
 <div class="modal-header">
     <div class="row" style="width: 100%; padding-right: 0px">
         <h5 class="modal-title col lead" id="cartModalLabel" style="font-size: 2rem; padding-left: 1.35rem">Корзина</h5>
@@ -9,12 +10,13 @@
         </div>
     </div>
 </div>
+{% endif %}
 <div class="modal-body">
     {% for atr in session_cart %}
-    <div style="margin: 0.5rem auto">
+    <div class="row-in-cart">
         <div class="card-body row">
-            <div class="col row">
-                <div class="col-3" style="margin: auto">
+            <div class="col row name-img-row-cart">
+                <div class="col-3 img-cart">
                     <img src="{{ atr.product.image.url }}"
                          class="img-fluid round-edges" style="width: 5rem; height: 5rem; display: none"
                          id="img_modal_{{ atr.product.slug }}{% if atr.product.category.name == 'Пиццы' %}{% if atr.product.price == atr.price %}20{% else %}30{% endif %}{% endif %}"
@@ -26,10 +28,10 @@
                         </div>
                     </div>
                 </div>
-                <p class="lead col" align="left" style="margin: auto; font-size: 2rem">
+                <p class="lead col name-cart" align="left">
                     {{ atr.product }}
                     {% if atr.product.category.name == 'Пиццы' %}
-                        <br><kbd style="font-size: 1.5rem">
+                        <br><kbd>
                         {% if atr.product.price == atr.price %}
                             20см
                         {% else %}
@@ -39,8 +41,8 @@
                     {% endif %}
                 </p>
             </div>
-            <div class="col-5 row">
-                <p class="col" style="margin: auto; font-size: 2rem">
+            <div class="col-5 row change-and-price-cart">
+                <p class="col name-cart">
                     <a type="button" name="in_cart_{{ atr.product.slug }}-{{ atr.price }}" onclick="FProducts(this, '-')" id="a_minus_{{ atr.product.slug }}-{{ atr.price }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 20">
                           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
@@ -53,10 +55,10 @@
                         </svg>
                     </a>
                 </p>
-                <p class="lead col" style="margin: auto; font-size: 2rem" id="">
+                <p class="lead col name-cart price-cart">
                     <strong id="num_price_in_cart_{{ atr.product.slug }}-{{ atr.price }}" data-name="{{ atr.product.slug }}">{{ atr.price }}</strong> ₽
                 </p>
-                <p class="col-2" style="margin: auto; font-size: 2rem">
+                <p class="col-2 name-cart">
                     <a type="button" name="in_cart_{{ atr.product.slug }}-{{ atr.price }}" onclick="FProducts(this, 'del')" id="a_del_{{ atr.product.slug }}-{{ atr.price }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 20">
                           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
@@ -75,6 +77,7 @@
         </p>
     </div>
 </div>
+{% if check_modal %}
 <div class="modal-footer" >
     <div style="padding: 0.5rem">
         <a href="/order/" class="shadow-sm slow-motion a-in-cart" style="font-size: 1.5rem; border-radius: 5px 5px 20px 5px">
@@ -82,6 +85,15 @@
         </a>
     </div>
 </div>
+{% endif %}
+<script>
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        $('.img-cart').css('display', 'none');
+        $('.change-and-price-cart').addClass('col').removeClass('col-5');
+        $('.name-img-row-cart').removeClass('col').addClass('col-5');
+        $('.price-cart').removeClass('col').addClass('col-4');
+    }
+</script>
 {% else %}
 <h1 class="display-5" align="center" style="margin: 3rem">
     Корзина пока пуста, <br>выберите блюда из меню

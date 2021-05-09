@@ -1,7 +1,7 @@
 {% extends 'main_page.html' %}
 {% block content %}
 <div class="shadow container card round-edges">
-    <div class="row" style="margin: 2rem">
+    <div class="row" style="margin: 1rem">
         <div class="col-2" style="margin: auto">
             <a class="fs-3 shadow slow-motion a-in-cart" type="button" data-bs-toggle="collapse" href="#collapse_cart"
                role="button" aria-expanded="false"
@@ -36,23 +36,36 @@
         Ваши контакты
     </h1>
     <br>
-    <form style="width: 30%" method="post" action="/order/">
+    <form class="order-form needs-validation" method="post" action="/order/" novalidate>
         {% csrf_token %}
         <div class="mb-3">
             <label for="input_name" class="form-label">Имя</label>
-            <input type="text" class="form-control" id="input_name">
+            <input type="text" class="form-control" id="input_name" name="input_name" autocomplete="given-name" required>
+            <div class="invalid-feedback">
+              Как к Вам можно обращаться?
+            </div>
         </div>
         <div class="mb-3">
             <label for="input_phone_number" class="form-label">Телефон</label>
-            <input type="tel" value="+7" class="form-control" id="input_phone_number">
+            <input type="tel" value="+7" class="form-control" id="input_phone_number" name="input_phone_number" autocomplete="tel" pattern="^\+?[78][-\(]?\d{3}\)?-?\d{3}-?\d{2}-?\d{2}$" required>
+            <div class="invalid-feedback">
+              Телефон нужен для связи с Вами
+            </div>
         </div>
         <div class="mb-3">
+        </div>
+            <label for="input_address" class="form-label">Самовывоз</label>
+            <input type="checkbox" id="check_address" name="check_address" autocomplete="street-address" required>
+        <div class="mb-3" id="address-form">
             <label for="input_address" class="form-label">Адрес</label>
-            <input type="text" class="form-control" id="input_address">
+            <input type="text" class="form-control input-address" id="input_address" name="input_address" autocomplete="street-address" required>
+            <div class="invalid-feedback">
+              Куда привезти заказ?
+            </div>
         </div>
         <div class="mb-3">
             <label for="input_comment" class="form-label">Комментарий</label>
-            <textarea type="text" class="form-control" id="input_comment" rows="3"></textarea>
+            <textarea type="text" class="form-control" id="input_comment" rows="3" name="input_comment" autocomplete="on"></textarea>
         </div>
         <button type="submit" class="shadow-sm slow-motion a-in-cart" style="font-size: 1.5rem; border-radius: 5px 5px 5px 20px; margin-top: 2rem; border: 0">
             Заказать
@@ -60,6 +73,12 @@
     </form>
 </div>
 <script>
+    $(".input-address").prop("disabled", false);
+
+    $("input:checkbox").on("change", function () {
+        $("#input_address").prop("disabled", $(this).prop("checked"));
+        $("#address-form").slideToggle();
+    });
     function ClickCart() {
         pr = $('#p_total_price');
         a = $('#cart-collapse');
@@ -80,8 +99,27 @@
             a.css('border-radius','20px 5px 5px 5px');
         };
     };
-    $('#cart_modal').load('/modal_cart/ .modal-body');
-    $('#products_in_cart_images').load('/products_in_cart_images/');
+    $('#cart_modal').load('/modal_cart/');
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        $('#products_in_cart_images').css('display', 'none');
+        $('.col-2').addClass('col').removeClass('col-2');
+    }
+    else {
+        $('#products_in_cart_images').load('/products_in_cart_images/');
+    };
     $('#clear-cart').hide();
+    var forms = document.querySelectorAll('.needs-validation');
+
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
 </script>
 {% endblock content %}

@@ -14,22 +14,54 @@
 <link rel="shortcut icon" href="/static/favicon.png" type="image/png">
 <link rel="stylesheet" type="text/css" href="/static/main_page.css"/>
 <body style="background-color: #f8f8f8">
-<div class="top-bar">
-    <a href="/" style="margin-right: 40px">
+<div class="justify-content-between navbar" id="navbar">
+    <a class="navbar-brand" href="/" style="margin-left: 1.5rem">
         <img src="/static/logo.png" alt="ConAmore" class="img-fluid img-logo slow-motion"></a>
-    <a class="display-5 big-but slow-motion" href="#">
-        Вакансии</a>
-    <a class="display-5 big-but slow-motion" href="#">
-        Контакты</a>
+    <div class="contacts_and_us">
+        <a class="display-5 big-but slow-motion contacts" href="/contacts/">
+            Контакты</a>
+        <a class="display-5 big-but slow-motion" href="/about_us/">
+            О нас</a>
+    </div>
 </div>
 
 {% block content %}
 
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success" role="alert" align="center">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
 <div class="products-bar shadow" id="bar_category" style="display: none">
-    <a href="#">
+    <a href="#" style="margin: auto">
         <img src="/static/mini-logo.png" alt="ConAmore" class="img-fluid img-logo-bar slow-motion"></a>
     {% for category in categories %}
-    <a class="col lead slow-motion a-products" align="center" href="#{{ category.slug }}">
+    <a class="col lead slow-motion a-products" href="#{{ category.slug }}">
+        <kbd>
+            {{ category }}
+        </kbd>
+    </a>
+    {% endfor %}
+</div>
+
+
+<div id="spinner_products-cont" class="products-cont shadow round-edges img-thumbnail" align="center" style="min-height: 10rem; padding: 3rem; margin: 0 auto 1rem">
+    <div class="spinner-grow" role="status">
+        <span class="visually-hidden">Загрузка...</span>
+    </div>
+</div>
+<div class="shadow container round-edges products-cont row img-thumbnail" align="center" id="products-cont"
+     style="min-height: 10rem; display: none">
+    {% for category in categories %}
+    <a class="col lead slow-motion a-products" href="#{{ category.slug }}">
+        {% if category.image_icon %}
+        <img src="{{ category.image_icon.url }}" class="img-fluid icon-products slow-motion"
+             alt='Иконка "{{ category.name }}"'>
+        <br>
+        {% endif %}
         <kbd>
             {{ category }}
         </kbd>
@@ -70,37 +102,15 @@
             <span class="visually-hidden">Следующий</span>
         </button>
     </div>
-    <div id="spinner_promos" class="shadow round-edges img-thumbnail" align="center" style="padding: 9.3rem">
+    <div id="spinner_promos" class="shadow round-edges img-thumbnail spinner-promos" align="center">
         <div class="spinner-grow" role="status">
             <span class="visually-hidden">Загрузка...</span>
         </div>
     </div>
 </div>
 
-
-<div id="spinner_products-cont" class="products-cont shadow round-edges img-thumbnail" align="center" style="padding: 3rem; margin: auto">
-    <div class="spinner-grow" role="status">
-        <span class="visually-hidden">Загрузка...</span>
-    </div>
-</div>
-<div class="shadow container round-edges products-cont row img-thumbnail" align="center" id="products-cont"
-     style="min-height: 180px; display: none">
-    {% for category in categories %}
-    <a class="col lead slow-motion a-products" href="#{{ category.slug }}">
-        {% if category.image_icon %}
-        <img src="{{ category.image_icon.url }}" class="img-fluid icon-products slow-motion"
-             alt='Иконка "{{ category.name }}"'>
-        <br>
-        {% endif %}
-        <kbd>
-            {{ category }}
-        </kbd>
-    </a>
-    {% endfor %}
-</div>
-
 <div data-bs-toggle="modal" data-bs-target="#cartModal" class="cart slow-motion btn btn-secondary" id="cart_price" style="display: none">
-    <p style="font-size: 2rem; margin: auto" align="center" id="p_total_price">
+    <p align="center" id="p_total_price" class="cart_price">
         {% if total_price %}
             <strong id="total_price">{{ total_price }}</strong> ₽
         {% else %}
@@ -125,14 +135,15 @@
 <h1 class="display-4 product-category" id="{{ category.slug }}">
     {{ category }}
 </h1>
-<div class="container products-cont big-products-cont img-thumbnail grid-card"
-     style="{% if category.name != 'Пиццы' %} grid-template-rows: repeat  (1, 176rem); {% endif %}">
+<div class="container products-cont big-products-cont img-thumbnail {% if category.name != 'Пиццы' %} grid-card {% else %} grid-pizza-card {% endif %}">
     {% for product in products %}
     <div class="shadow-sm card main_card round-edges {% if category.name == 'Пиццы' %} pizza_card {% endif %}"  id="card_{{ product.slug }}">
         {% if product.image %}
-        <img src="{{ product.image.url }}" class="round-edges" alt='Иконка "{{ product.name }}"'
-             style="min-height: 286px; display: none" id="img_{{ product.slug }}" onload="LoadImg(this)">
-        <div id="spinner_img_{{ product.slug }}" align="center" style="padding: 8rem; margin: auto; min-height: 286px">
+        <div align="center">
+            <img src="{{ product.image.url }}" class="round-edges img-products" alt='Иконка "{{ product.name }}"'
+                 id="img_{{ product.slug }}" onload="LoadImg(this)">
+        </div>
+        <div id="spinner_img_{{ product.slug }}" class="img-spinner" align="center">
             <div class="spinner-grow" role="status">
                 <span class="visually-hidden">Загрузка...</span>
             </div>
@@ -183,25 +194,12 @@
     {% endfor %}
 </div>
 {% endfor %}
+
 {% endblock content %}
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
 <script>
-$(function() {
-  var elem = document.getElementById('products-cont');
-  $(window).on('load scroll', function() {
-  	var top = elem.getBoundingClientRect().top ;
-    if (top <= -50) {
-      $('#bar_category').slideDown('fast');
-      $('#cart_price').fadeIn('slow');
-    }
-    else {
-      $('#bar_category').slideUp('fast');
-      $('#cart_price').fadeOut(100);
-    };
-  });
-});
 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
   return new bootstrap.Popover(popoverTriggerEl)
@@ -234,11 +232,8 @@ function request(in_cart_a, operation) {
         data: { slug: price.dataset.name, price: price.innerHTML },
         url: operations[operation],
         success: function (data) {
-            if (document.getElementById('bar_category')) {
-                $('#cart_modal').load('/modal_cart/');
-            }
-            else {
-                $('#cart_modal').load('/modal_cart/ .modal-body');
+            $('#cart_modal').load('/modal_cart/');
+            if (!document.getElementById('bar_category')) {
                 $('.image-modal-product').hide();
             };
             CalcTotalPrice (data.total_price);
@@ -269,9 +264,28 @@ function LoadImg(img) {
         $('#carouselExampleCaptions').fadeIn('linear');
         $('#spinner_promos').hide();
     });
-    $('#products-cont').imagesLoaded( function() {
-        $('#products-cont').fadeIn('linear');
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        var elem = document.getElementById('navbar');
         $('#spinner_products-cont').hide();
+    } else {
+        $('#products-cont').imagesLoaded( function() {
+            $('#products-cont').fadeIn('linear');
+            $('#spinner_products-cont').hide();
+        });
+        var elem = document.getElementById('products-cont');
+    }
+    $(function() {
+      $(window).on('load scroll', function() {
+        var top = elem.getBoundingClientRect().top ;
+        if (top <= -50) {
+          $('#bar_category').slideDown('fast');
+          $('#cart_price').fadeIn('slow');
+        }
+        else {
+          $('#bar_category').slideUp('fast');
+          $('#cart_price').fadeOut(100);
+        };
+      });
     });
 
 </script>

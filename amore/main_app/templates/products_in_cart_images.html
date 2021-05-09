@@ -5,7 +5,7 @@
         <img class="row round-edges" src="{{ atr.product.image.url }}" style="width: 5rem; height: 5rem; display: none" onload="LoadImg(this)"
              id="img_order_{{ atr.product.slug }}{% if atr.product.category.name == 'Пиццы' %}{% if atr.product.price == atr.price %}20{% else %}30{% endif %}{% endif %}">
         <div id="spinner_img_order_{{ atr.product.slug }}{% if atr.product.category.name == 'Пиццы' %}{% if atr.product.price == atr.price %}20{% else %}30{% endif %}{% endif %}"
-             style="padding: 1.5rem 0 0 1.5rem; height: 5rem; margin: auto">
+             style="padding-top: 1.2rem; height: 5rem; margin: auto">
             <div class="spinner-grow" role="status">
                 <span class="visually-hidden">Загрузка...</span>
             </div>
