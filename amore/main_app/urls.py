@@ -5,7 +5,7 @@ from main_app.views import *
 urlpatterns = [
     path('', MainPageView.as_view(), name='main'),
     path('order/', OrderPageView.as_view(), name='order'),
-    path('order_detail/<int:order_id>/', OrderDetailPageView.as_view(), name='order_detail'),
+    path('order_detail/<str:number>/<int:order_id>/', OrderDetailPageView.as_view(), name='order_detail'),
     path('modal_cart/', CartModalView.as_view(), name='modal_cart'),
     path('add_product_in_cart/', AddProductInCart, name='add_product_in_cart'),
     path('clear_cart/', ClearCart, name='clear_cart'),

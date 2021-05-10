@@ -1,14 +1,13 @@
-from django.contrib import messages
 from django.http import JsonResponse, HttpResponseRedirect
 from django.utils.safestring import mark_safe
-
 from amore.settings import TOKEN, MY_ID
 from .cart import Cart as SessionCart
 from django.shortcuts import render
+from django.contrib import messages
 from django.views import View
+from datetime import datetime
 from main_app.models import *
 from .models import Product
-
 from telepot import Bot
 
 
@@ -56,6 +55,8 @@ class OrderPageView(View):
 
     @staticmethod
     def get(request):
+        if SessionCart(request).get_total_price() == 0:
+            return HttpResponseRedirect('/')
         return render(
             request=request,
             template_name='order_page.html',
@@ -69,7 +70,7 @@ class OrderPageView(View):
     def post(request, **kwargs):
         cart = SessionCart(request)
         order = Order(
-            time_begin=timezone.datetime.now(),
+            time_begin=datetime.now(timezone.utc),
             customer=request.POST.get('input_name'),
             number_customer=request.POST.get('input_phone_number'),
             address=request.POST.get('input_address') if request.POST.get('check_address') != 'on' else 'Самовывоз',
@@ -87,7 +88,8 @@ class OrderPageView(View):
         if order.comment != '':
             message += f'\nКомментарий: {order.comment}'
         send_message(message)
-        messages.success(request, mark_safe(f'Скоро мы позвоним Вам! Заказ <a href="{order.get_url()}" class="alert-link">номер №{order.pk}</a> поступил в обработку.'))
+        messages.success(request, mark_safe(
+            f'Скоро мы позвоним Вам!<br>Заказ <a href="{order.get_url()}" class="alert-link">номер №{order.pk}</a> поступил в обработку.'))
         cart.clear()
         return HttpResponseRedirect('/')
 
@@ -180,9 +182,24 @@ class OrderDetailPageView(View):
     @staticmethod
     def get(request, **kwargs):
         order = Order.objects.get(id=int(kwargs["order_id"]))
-        cart = order.cart
+        cart = [
+            {
+                'product': Product.objects.get(name=item_product[item_product.find('x') + 2: item_product.find('(') - 1]),
+                'price': item_product[item_product.find('(') + 1: item_product.find('₽') - 1],
+                'quantity': item_product.split(' ')[0]
+            }
+            if 'см' not in item_product else
+            {
+                'product': Product.objects.get(name=item_product[item_product.find('x') + 2: item_product.find('см') - 5]),
+                'size': item_product[item_product.find('см') - 2: item_product.find('см')],
+                'price': item_product[item_product.find('(') + 1: item_product.find('₽') - 1],
+                'quantity': item_product.split(' ')[0]
+            }
+            for item_product in order.cart.split('\n')[:-1]
+        ]
         return render(request, 'order_detail_page.html', {
             'title': f'Con Amore | Заказ №{kwargs["order_id"]}',
             'order': order,
-            'cart': cart
+            'cart': cart,
+            'total_price': int(order.total_price)
         })

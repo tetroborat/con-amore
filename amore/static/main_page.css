@@ -207,6 +207,10 @@ body {
     width: 12rem
 }
 @media screen and (max-width: 768px) {
+    .modal-content {
+        margin-top: 3rem;
+        margin-bottom: 3rem
+    }
     .name-img-row-cart {
         padding-left: 0.5rem
     }

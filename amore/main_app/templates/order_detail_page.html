@@ -1,8 +1,78 @@
 {% extends 'main_page.html' %}
 {% block content %}
 
-{{ order }}
+<h1 class="display-5" align="center">
+    Заказ №{{ order.pk }}
+    <br>
+    <small class="text-muted">{{ order.time_begin|date:"H:i j E Y" }}</small>
+</h1>
 
-{{ cart }}
+<div class="shadow container round-edges" style="padding: 1rem; margin: 3rem auto">
+    {% for atr in cart %}
+    <div class="row-in-cart">
+        <div class="card-body row">
+            <div class="col row name-img-row-cart">
+                <div class="col-3 img-cart">
+                    <img src="{{ atr.product.image.url }}"
+                         class="img-fluid round-edges" style="width: 5rem; height: 5rem; display: none"
+                         id="img_modal_{{ atr.product.slug }}{% if atr.product.category.name == 'Пиццы' %}{% if atr.product.price == atr.price %}20{% else %}30{% endif %}{% endif %}"
+                         onload="LoadImg(this)">
+                    <div id="spinner_img_modal_{{ atr.product.slug }}{% if atr.product.category.name == 'Пиццы' %}{% if atr.product.price == atr.price %}20{% else %}30{% endif %}{% endif %}"
+                         style="padding: 1.5rem 0 0 1.5rem; height: 5rem; margin: auto">
+                        <div class="spinner-grow" role="status">
+                            <span class="visually-hidden">Загрузка...</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="lead col name-cart" align="left">
+                    {{ atr.product }}
+                    {% if atr.product.category.name == 'Пиццы' %}
+                        <br><kbd>
+                        {% if atr.size == '20' %}
+                            20см
+                        {% else %}
+                            30см
+                        {% endif %}
+                        </kbd>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-5 row change-and-price-cart">
+                <p class="col name-cart">
+                    {{ atr.quantity }}
+                </p>
+                <p class="lead col name-cart price-cart">
+                    <strong>{{ atr.price }}</strong> ₽
+                </p>
+            </div>
+        </div>
+    </div>
+    <hr class="dropdown-divider">
+    {% endfor %}
+    <br>
+    <div align="right" style="padding-right: 1rem">
+        <p class="lead" style="font-size: 2rem">
+            Итого: <strong class="modal_total_price">{{ total_price }}</strong> ₽
+        </p>
+    </div>
+</div>
 
+
+<h1 class="display-5" align="center">
+    {{ order.customer }}
+    <br>
+    <a href="tel:{{ order.number_customer }}" style="text-decoration: none">
+        <small class="text-muted" style="padding-bottom: 2rem">
+            {{ order.number_customer }}
+        </small>
+    </a>
+</h1>
+
+<script>
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        $('.img-cart').css('display', 'none');
+        $('.change-and-price-cart').addClass('col').removeClass('col-5');
+        $('.price-cart').removeClass('col').addClass('col-4');
+    }
+</script>
 {% endblock content %}

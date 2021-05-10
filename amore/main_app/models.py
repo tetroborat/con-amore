@@ -121,11 +121,12 @@ class Order(models.Model):
     )
 
     def __str__(self):
-        return f'{self.time_begin.strftime("%d.%m.%Y %H:%M")}  |  {self.customer}  |  {self.number_customer}  |  {self.total_price} ₽'
+        return f'{self.pk}  |  {self.time_begin.astimezone(timezone.get_default_timezone()).strftime("%H:%M %d.%m.%Y")}  |  {self.customer}  |  {self.number_customer}  |  {self.total_price} ₽'
 
     def get_url(self):
         return reverse('order_detail', kwargs={
-            'order_id': self.pk
+            'order_id': self.pk,
+            'number': self.number_customer
         })
 
 
