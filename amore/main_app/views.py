@@ -15,7 +15,7 @@ telegramBot = Bot(TOKEN)
 
 
 def send_message(text):
-    telegramBot.sendMessage(MY_ID, text, parse_mode="Markdown")
+    telegramBot.sendMessage(MY_ID, text, parse_mode="HTML")
 
 
 class MainPageView(View):
@@ -79,12 +79,12 @@ class OrderPageView(View):
             comment=request.POST.get('input_comment')
         )
         order.save()
-        message = f'*Заказ №{order.pk}*\n\n' \
+        message = f'<a href="con-amore.herokuapp.com/order_detail/{order.number_customer}/{order.pk}/"><b>Заказ №{order.pk}</b></a>\n\n' \
                   f'{order.cart}\n' \
-                  f'*Итого: {order.total_price} ₽*\n\n' \
+                  f'<b>Итого: {order.total_price} ₽</b>\n\n' \
                   f'{order.customer}\n' \
                   f'{order.address}\n' \
-                  f'{order.number_customer}'
+                  f'<a href="tel:{order.number_customer}">{order.number_customer}</a>'
         if order.comment != '':
             message += f'\nКомментарий: {order.comment}'
         send_message(message)
