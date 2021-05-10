@@ -4,7 +4,7 @@
     <div class="row" style="width: 100%; padding-right: 0px">
         <h5 class="modal-title col lead" id="cartModalLabel" style="font-size: 2rem; padding-left: 1.35rem">Корзина</h5>
         <div class="col" align="right" style="padding-right: 0px; margin: auto">
-            <a id="clear-cart" type="button" onclick="ClearCart()" class="shadow-sm slow-motion a-in-cart" style="font-size: 1.35rem; border-radius: 5px 20px 5px 5px">
+            <a id="clear-cart" onclick="ClearCart()" class="shadow-sm slow-motion a-in-cart" style="font-size: 1.35rem; border-radius: 5px 20px 5px 5px">
                 Очистить
             </a>
         </div>
@@ -43,13 +43,13 @@
             </div>
             <div class="col-5 row change-and-price-cart">
                 <p class="col name-cart">
-                    <a type="button" name="in_cart_{{ atr.product.slug }}-{{ atr.price }}" onclick="FProducts(this, '-')" id="a_minus_{{ atr.product.slug }}-{{ atr.price }}">
+                    <a name="in_cart_{{ atr.product.slug }}-{{ atr.price }}" onclick="FProducts(this, '-')" id="a_minus_{{ atr.product.slug }}-{{ atr.price }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 20">
                           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
                         </svg>
                     </a>
                     {{ atr.quantity }}
-                    <a type="button" name="in_cart_{{ atr.product.slug }}-{{ atr.price }}" onclick="FProducts(this, '+')" id="a_plus_{{ atr.product.slug }}-{{ atr.price }}">
+                    <a name="in_cart_{{ atr.product.slug }}-{{ atr.price }}" onclick="FProducts(this, '+')" id="a_plus_{{ atr.product.slug }}-{{ atr.price }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 20">
                           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                         </svg>
@@ -59,7 +59,7 @@
                     <strong id="num_price_in_cart_{{ atr.product.slug }}-{{ atr.price }}" data-name="{{ atr.product.slug }}">{{ atr.price }}</strong> ₽
                 </p>
                 <p class="col-2 name-cart">
-                    <a type="button" name="in_cart_{{ atr.product.slug }}-{{ atr.price }}" onclick="FProducts(this, 'del')" id="a_del_{{ atr.product.slug }}-{{ atr.price }}">
+                    <a name="in_cart_{{ atr.product.slug }}-{{ atr.price }}" onclick="FProducts(this, 'del')" id="a_del_{{ atr.product.slug }}-{{ atr.price }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 20">
                           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
                         </svg>

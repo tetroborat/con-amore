@@ -73,8 +73,6 @@
 .a-in-cart:hover {
     color: white;
     background-color: #f906;
-    font-size: 1.35rem;
-    padding: 10px 20px 5px 15px;
 }
 .a-products:hover .icon-products{
     max-width: 4.15rem
@@ -203,7 +201,25 @@ body {
 .order-form {
     width: 25rem
 }
+.soc-button {
+    display: inline-block;
+    height: 4rem;
+    width: 12rem
+}
 @media screen and (max-width: 768px) {
+    .soc-big-but {
+        text-decoration: none;
+        padding: 4rem;
+        padding: 1.5rem 1rem;
+    }
+    .soc-big-but:hover {
+        background-color: #f906;
+        border-radius: 3rem;
+        padding: 1.5rem 1rem;
+    }
+    .soc-button {
+        width: 5rem
+    }
     .order-form {
         width: 100%
     }

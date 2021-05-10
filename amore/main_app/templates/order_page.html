@@ -3,7 +3,7 @@
 <div class="shadow container card round-edges">
     <div class="row" style="margin: 1rem">
         <div class="col-2" style="margin: auto">
-            <a class="fs-3 shadow slow-motion a-in-cart" type="button" data-bs-toggle="collapse" href="#collapse_cart"
+            <a class="fs-3 shadow slow-motion a-in-cart" data-bs-toggle="collapse" href="#collapse_cart"
                role="button" aria-expanded="false"
                aria-controls="collapse_cart" style="border-radius: 20px 5px 5px 20px" onclick="ClickCart()"
                id="cart-collapse">
@@ -18,7 +18,7 @@
                 <strong id="total_price">{{ total_price }}</strong> ₽
             </p>
             <div align="right" style="padding-right: 0px; margin: auto">
-                <a href="/" id="clear-cart" type="button" onclick="ClearCart()"
+                <a href="/" id="clear-cart" onclick="ClearCart()"
                    class="fs-3 shadow-sm slow-motion a-in-cart"
                    style="font-size: 1.35rem; border-radius: 5px 20px 5px 5px">
                     Очистить
