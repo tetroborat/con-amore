@@ -207,6 +207,12 @@ body {
     width: 12rem
 }
 @media screen and (max-width: 768px) {
+    .name-img-row-cart {
+        padding-left: 0.5rem
+    }
+    .change-and-price-cart {
+        padding: 0
+    }
     .soc-big-but {
         text-decoration: none;
         padding: 4rem;
@@ -228,7 +234,8 @@ body {
         height: 5rem
     }
     .name-cart {
-        font-size: 1rem
+        font-size: 1rem;
+        padding: 0
     }
     .spinner-promos {
         padding: 2.8rem
@@ -242,7 +249,7 @@ body {
         font-size: 1.5rem
     }
     .products-bar {
-        padding-bottom: 0;
+        padding-bottom: 0.5rem;
     }
     .img-logo-bar {
         height: 1.7rem;
@@ -259,7 +266,7 @@ body {
     .a-products {
         text-decoration: none;
         font-size: 1rem;
-        margin: auto 0.15rem;
+        margin: auto 0.5rem;
     }
     .slide-cont {
         margin: 1rem 0 0 0;
