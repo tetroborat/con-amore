@@ -114,7 +114,7 @@
     display: grid;
     grid-gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-    grid-template-rows: repeat  (1, 176rem);
+    grid-template-rows: repeat  (1, 32rem);
     justify-items: center;
 }
 .grid-pizza-card {
@@ -206,7 +206,13 @@ body {
     height: 4rem;
     width: 12rem
 }
+.navbar-brand {
+    margin-left: 1.5rem
+}
 @media screen and (max-width: 330px) {
+    .navbar-brand {
+        margin-left: 0.5rem
+    }
     .img-products {
         height: 16rem;
         width: 16rem;
@@ -218,8 +224,122 @@ body {
         height: 16rem;
         width: 16rem
     }
+    .main_card {
+        width: 100%;
+        height: 25.75rem;
+        margin: 0
+    }
+    .modal-content {
+        margin-top: 3rem;
+        margin-bottom: 3rem
+    }
+    .name-img-row-cart {
+        padding-left: 0.5rem
+    }
+    .change-and-price-cart {
+        padding: 0
+    }
+    .soc-big-but {
+        text-decoration: none;
+        padding: 4rem;
+        padding: 1.5rem 1rem;
+    }
+    .soc-big-but:hover {
+        background-color: #f906;
+        border-radius: 3rem;
+        padding: 1.5rem 1rem;
+    }
+    .soc-button {
+        width: 5rem
+    }
+    .order-form {
+        width: 100%
+    }
+    .img-cart {
+        width: 5rem;
+        height: 5rem
+    }
+    .name-cart {
+        font-size: 1rem;
+        padding: 0
+    }
+    .spinner-promos {
+        padding: 2.8rem
+    }
+    .cart {
+        padding: 0.5rem;
+        right: 4%;
+        bottom: 2%
+    }
+    .cart_price {
+        font-size: 1.5rem
+    }
+    .products-bar {
+        padding-bottom: 0.5rem;
+    }
+    .img-logo-bar {
+        height: 1.7rem;
+        min-width: 3rem;
+        width: 3.4rem;
+        margin-right: 0.5rem
+    }
+    .img-logo-bar:hover {
+        height: 1.7rem;
+        min-width: 3rem;
+        width: 3.4rem;
+        padding: 0;
+    }
+    .a-products {
+        text-decoration: none;
+        font-size: 1rem;
+        margin: auto 0.5rem;
+    }
+    .slide-cont {
+        margin: 1rem 0 0 0;
+    }
+    .contacts_and_us {
+        margin: 0rem
+    }
+    .contacts {
+        margin: 0rem
+    }
+    .big-but {
+        text-decoration: none;
+        color: black;
+        padding: 1rem;
+        border-radius: 7rem;
+        font-size: 1.5rem
+    }
+    .img-logo {
+        height: 3rem;
+        min-width: 3rem;
+        padding: 0
+    }
+    .grid-card {
+        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    }
+    .grid-pizza-card {
+        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));    }
+    .a-in-cart {
+        font-size: 1.75rem
+    }
+    .product-name {
+        font-size: 2rem
+    }
+    .product-price {
+        font-size: 1.35rem
+    }
+    .pizza_card {
+        height: 29rem;
+    }
+    .product-category {
+        font-size: 2rem;
+        margin-left: 18%;
+        padding-top: 5rem
+    }
 }
-@media screen and (max-width: 768px) {
+
+@media screen and (max-width: 768px) and (min-width: 330px) {
     .modal-content {
         margin-top: 3rem;
         margin-bottom: 3rem

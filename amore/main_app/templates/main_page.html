@@ -15,7 +15,7 @@
 <link rel="stylesheet" type="text/css" href="/static/main_page.css"/>
 <body style="background-color: #f8f8f8">
 <div class="justify-content-between navbar" id="navbar">
-    <a class="navbar-brand" href="/" style="margin-left: 1rem">
+    <a class="navbar-brand" href="/">
         <img src="/static/logo.png" alt="ConAmore" class="img-fluid img-logo slow-motion"></a>
     <div class="contacts_and_us">
         <a class="display-5 big-but slow-motion contacts" href="/contacts/">
@@ -181,7 +181,7 @@
             {% endif %}
             <div class="row">
                 <div class="col">
-                    <a href="#1" class="shadow-sm slow-motion a-in-cart" id="a_{{ product.slug }}" name="{{ product.slug }}" onclick="FProducts(this, '+')">
+                    <a href="#1" class="shadow-sm slow-motion a-in-cart" id="a_{{ product.slug }}" name="{{ product.slug }}" onclick="FProducts(this, '+')" style="font-size: 1.55rem">
                         В корзину
                     </a>
                 </div>
