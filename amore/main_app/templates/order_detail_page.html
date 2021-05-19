@@ -1,6 +1,10 @@
 {% extends 'main_page.html' %}
 {% block content %}
-
+{% if error %}
+<h1 class="display-5" align="center" style="margin-top: 4rem">
+    {{ error }}
+</h1>
+{% else %}
 <h1 class="display-5" align="center">
     Заказ №{{ order.pk }}
     <br>
@@ -75,4 +79,5 @@
         $('.price-cart').removeClass('col').addClass('col-4');
     }
 </script>
+{% endif %}
 {% endblock content %}

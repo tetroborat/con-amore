@@ -181,25 +181,32 @@ class OrderDetailPageView(View):
 
     @staticmethod
     def get(request, **kwargs):
-        order = Order.objects.get(id=int(kwargs["order_id"]))
-        cart = [
-            {
-                'product': Product.objects.get(name=item_product[item_product.find('x') + 2: item_product.find('(') - 1]),
-                'price': item_product[item_product.find('(') + 1: item_product.find('₽') - 1],
-                'quantity': item_product.split(' ')[0]
-            }
-            if 'см' not in item_product else
-            {
-                'product': Product.objects.get(name=item_product[item_product.find('x') + 2: item_product.find('см') - 5]),
-                'size': item_product[item_product.find('см') - 2: item_product.find('см')],
-                'price': item_product[item_product.find('(') + 1: item_product.find('₽') - 1],
-                'quantity': item_product.split(' ')[0]
-            }
-            for item_product in order.cart.split('\n')[:-1]
-        ]
-        return render(request, 'order_detail_page.html', {
-            'title': f'Con Amore | Заказ №{kwargs["order_id"]}',
-            'order': order,
-            'cart': cart,
-            'total_price': int(order.total_price)
-        })
+        order = Order.objects.filter(id=int(kwargs['order_id']), number_customer=kwargs['number'])
+        if not order.exists():
+            return render(request, 'order_detail_page.html', {
+                'title': 'Con Amore | Заказ не найден',
+                'error': 'Такого заказа не существует'
+            })
+        else:
+            order = order.first()
+            cart = [
+                {
+                    'product': Product.objects.get(name=item_product[item_product.find('x') + 2: item_product.find('(') - 1]),
+                    'price': item_product[item_product.find('(') + 1: item_product.find('₽') - 1],
+                    'quantity': item_product.split(' ')[0]
+                }
+                if 'см' not in item_product else
+                {
+                    'product': Product.objects.get(name=item_product[item_product.find('x') + 2: item_product.find('см') - 5]),
+                    'size': item_product[item_product.find('см') - 2: item_product.find('см')],
+                    'price': item_product[item_product.find('(') + 1: item_product.find('₽') - 1],
+                    'quantity': item_product.split(' ')[0]
+                }
+                for item_product in order.cart.split('\n')[:-1]
+            ]
+            return render(request, 'order_detail_page.html', {
+                'title': f'Con Amore | Заказ №{kwargs["order_id"]}',
+                'order': order,
+                'cart': cart,
+                'total_price': int(order.total_price)
+            })
